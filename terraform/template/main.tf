@@ -1,3 +1,7 @@
+# --- TERRAFORM TEMPLATE ---
+# Standard configurations are shown below, with additional comments on
+# how and when to use them, how to configure, and so on.
+
 # --- Terraform Initialization ---
 terraform {
   required_providers {
