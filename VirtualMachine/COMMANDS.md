@@ -1,4 +1,9 @@
 ## Create a new VM
+Navigate to the root of the project
+```
+cd path/to/project-root
+```
+
 List projects to get ID
 ```
 gcloud projects list
