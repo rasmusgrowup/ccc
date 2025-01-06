@@ -23,10 +23,7 @@ gcloud compute instances create node-app-instance --zone=europe-north1-a --machi
 Allow traffic to your VM instance:
 (Here we are using port 8080 because it matches the port in the app)
 ```
-gcloud compute firewall-rules create default-allow-http \
-    --allow tcp:8080 \
-    --source-ranges=0.0.0.0/0 \
-    --target-tags http-server
+gcloud compute firewall-rules create default-allow-http --allow tcp:8080 --source-ranges=0.0.0.0/0 --target-tags http-server
 ```
 
 ## SSH into the VM
@@ -46,11 +43,39 @@ node -v
 npm -v
 ```
 
+ALTERNATIVELY install nvm
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+```
+
+Remember to run:
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+```
+
+Check nvm was installed
+```
+nvm -v
+```
+
+And install Node.js
+
+```
+nvm install --lts
+```
+
 ## Upload to the VM
 
 On your local machine, open a new terminal, use gcloud scp to copy your app files to the VM:
 ```
 gcloud compute scp ./app.js node-app-instance:~/ --zone=europe-north1-a
+```
+
+And the package.json file:
+```
+gcloud compute scp ./package.json  ccc-app:~/ --zone=europe-north1-a
 ```
 
 ## Run the app on the VM
@@ -68,3 +93,18 @@ Run the app
 ```
 node app.js
 ```
+
+## Visit the frontend
+
+Find the IP address:
+```
+gcloud compute instances list
+```
+
+Which will give you a result like this:
+```
+NAME     ZONE             MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
+ccc-app  europe-north1-a  e2-micro                   10.166.0.4   34.88.42.155  RUNNING
+```
+
+Then visit the app at `http://[EXTERNAL-IP]:8080`
