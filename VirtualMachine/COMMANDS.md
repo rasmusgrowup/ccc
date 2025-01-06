@@ -15,11 +15,9 @@ gcloud config set project [PROJECT_ID]
 ```
 
 Use the gcloud command to create a VM instance. For example:
+* NOTICE: node-app-instance is the name of the instance you are creating
 ```
-gcloud compute instances create node-app-instance \
-    --zone=europe-north1-a \
-    --machine-type=e2-micro \
-    --tags=http-server,https-server
+gcloud compute instances create node-app-instance --zone=europe-north1-a --machine-type=e2-micro --tags=http-server,https-server
 ```
 
 Allow traffic to your VM instance:
