@@ -29,13 +29,13 @@ terraform validate
 
 3. Create a Plan
 
-Preview the changes Terraform will apply to your infrastructure:
+Preview the changes Terraform will apply to your infrastructure. (You can run these commands without the flags also, so just `terraform plan`)
 
 ```
 terraform plan -var="project_id=<your-gcp-project-id>" -var="region=<your-region>" -var="zone=<your-zone>" -var="instance_count=<number-of-vms>"
 ```
 
-Example using the example configuration:
+Example using the example configuration: (You can run these commands without the flags also, so just `terraform plan`)
 
 ```
 terraform plan -var="project_id=my-gcp-project" -var="region=europe-north1" -var="zone=europe-north1-a" -var="instance_count=3"
@@ -43,13 +43,13 @@ terraform plan -var="project_id=my-gcp-project" -var="region=europe-north1" -var
 
 4. Apply the Configuration
 
-Deploy the resources defined in your Terraform configuration:
+Deploy the resources defined in your Terraform configuration: (You can run these commands without the flags also, so just `terraform apply`)
 
 ```
 terraform apply -var="project_id=<your-gcp-project-id>" -var="region=<your-region>" -var="zone=<your-zone>" -var="instance_count=<number-of-vms>"
 ```
 
-Example using the example configuration:
+Example using the example configuration: ("project_id" is the variable name, "my-gcp-project" is the value)
 
 ```
 terraform apply -var="project_id=my-gcp-project" -var="region=europe-north1" -var="zone=europe-north1-a" -var="instance_count=3"

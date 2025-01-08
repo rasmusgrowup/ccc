@@ -23,29 +23,29 @@ terraform {
 
 # Provider Configuration
 provider "google" {
-  project = var.project_id
+  project = "[GCP-PROJECT-ID]"
   region  = "europe-north1"
 }
 
 # Create VPC Network
 resource "google_compute_network" "custom_vpc" {
   name                    = "custom-auto-vpc"
-  auto_create_subnetworks = false
+  auto_create_subnetworks = true
 }
 
-# Create Subnet in europe-north1
-resource "google_compute_subnetwork" "custom_subnet" {
-  name          = "custom-subnet-europe-north1"
-  ip_cidr_range = "10.0.0.0/16"
-  region        = "europe-north1"
-  network       = google_compute_network.custom_vpc.id
-}
+# Create Subnet in europe-north1 # <---- enable if auto-create subnets is not allowed
+#resource "google_compute_subnetwork" "custom_subnet" {
+#  name          = "custom-subnet-europe-north1"
+#  ip_cidr_range = "10.0.0.0/16"
+#  region        = "europe-north1"
+#  network       = google_compute_network.custom_vpc.id
+#}
 
 # Create a VM Instance
 resource "google_compute_instance" "vm_instance" {
-  name         = "vm-instance"
-  machine_type = "e2-medium"
-  zone         = "europe-north1-a"
+  name         = "vm-instance-name" # Name of the instance
+  machine_type = "e2-micro" # Type of machine used
+  zone         = "europe-north1-a" # Replace with the real zone, run gcloud compute zones list to get the list of regions
 
   boot_disk {
     initialize_params {
@@ -55,7 +55,7 @@ resource "google_compute_instance" "vm_instance" {
 
   network_interface {
     network    = google_compute_network.custom_vpc.id
-    subnetwork = google_compute_subnetwork.custom_subnet.id
+    # subnetwork = google_compute_subnetwork.custom_subnet.id # <---- enable if auto-create subnets is not allowed
     access_config {}
   }
 }
@@ -75,19 +75,13 @@ resource "google_compute_firewall" "allow_http" {
 }
 
 # Add tags to the VM for firewall rule
-resource "google_compute_instance" "vm_instance_tags" {
-  instance = google_compute_instance.vm_instance.name
-  tags     = ["http-server"]
-}
+#resource "google_compute_instance" "vm_instance_tags" {
+#  instance = google_compute_instance.vm_instance.name
+#  tags     = ["http-server"]
+#}
 
 # --- SECTION: Outputs ---
 output "vm_instance_external_ip" {
   description = "The external IP of the VM instance"
   value       = google_compute_instance.vm_instance.network_interface[0].access_config[0].nat_ip
-}
-
-# --- SECTION: Variables ---
-variable "project_id" {
-  description = "The Google Cloud project ID"
-  type        = string
 }
